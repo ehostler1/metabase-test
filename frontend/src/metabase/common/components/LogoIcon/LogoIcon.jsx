@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Component } from "react";
 
 import CS from "metabase/css/core/index.css";
-import { PLUGIN_LOGO_ICON_COMPONENTS } from "metabase/plugins";
 
 export class DefaultLogoIcon extends Component {
   static defaultProps = {
@@ -179,7 +178,4 @@ export class DefaultLogoIcon extends Component {
   }
 }
 
-export default function LogoIcon(props) {
-  const [Component = DefaultLogoIcon] = PLUGIN_LOGO_ICON_COMPONENTS;
-  return <Component {...props} />;
-}
+export default function LogoIcon(props) {}
