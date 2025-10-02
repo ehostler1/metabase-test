@@ -3,10 +3,10 @@ info:
   version: 1.0.0-SNAPSHOT-9.2.1.jre8
   description: Allows Metabase to connect to the Sidekick database.
 driver:
-  name: sidekick-sqlserver
+  name: sidekick
   display-name: Sidekick SQL Server
   lazy-load: true
-  parent: sql-jdbc
+  parent: sqlserver
   connection-properties:
     - merge:
         - host
@@ -39,6 +39,8 @@ driver:
     - default-advanced-options
 init:
   - step: load-namespace
-    namespace: metabase.driver.sidekick-sqlserver
+    namespace: metabase.driver.sqlserver
+  - step: load-namespace
+    namespace: metabase.driver.sidekick
   - step: register-jdbc-driver
     class: com.microsoft.sqlserver.jdbc.SQLServerDriver
