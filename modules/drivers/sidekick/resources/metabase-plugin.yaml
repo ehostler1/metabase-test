@@ -2,6 +2,8 @@ info:
   name: Metabase Sidekick Database
   version: 1.0.0-SNAPSHOT-9.2.1.jre8
   description: Allows Metabase to connect to the Sidekick database.
+dependencies:
+  - plugin: Metabase SQL Server Driver
 driver:
   name: sidekick
   display-name: Sidekick SQL Server

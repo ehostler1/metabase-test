@@ -10,7 +10,7 @@
 
   (set! *warn-on-reflection* true)
 
-  (driver/register! :sidekick, :parent :sqlserver)
+  (driver/register! :sidekick, :parent #{:sqlserver})
 
   (defmethod sql-jdbc.conn/connection-details->spec :sidekick
   [_ {:keys [user password db host port instance domain ssl]
