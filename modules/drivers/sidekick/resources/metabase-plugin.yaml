@@ -20,24 +20,24 @@ driver:
         - dbname
         - name: db
           placeholder: Sidekick
-    - name: instance
-      display-name: Database instance name
-      placeholder: N/A
     - merge:
         - user
-        - helper-text: The Sidekick database templated username, where {local} is replaced with the user's local (e.g. username-at-{local}).
-    - password
-    - name: role
-      display-name: Default impersonation user (required for impersonation if the connection's user cannot be impersonated)
-      helper-text: User used to run system queries, required if the connection's user cannot be impersonated, such as the 'sa' user.
-      placeholder: user
-    - cloud-ip-address-info
-    - ssl
-    - ssh-tunnel
-    - advanced-options-start
+        - name: local-user
+          display-name: Local Username
+          helper-text: The Sidekick database templated username, where {local} is replaced with the user's local (e.g. username-at-{local}).
     - merge:
-        - additional-options
-        - placeholder: "trustServerCertificate=false"
+        - password
+        - name: local-password
+          display-name: Local Password
+    - merge:
+        - user
+        - name: admin-user
+          display-name: Admin username
+    - merge:
+        - password
+        - name: admin-password
+          display-name: Admin password
+    - advanced-options-start
     - default-advanced-options
 init:
   - step: load-namespace
