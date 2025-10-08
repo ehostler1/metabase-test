@@ -14,23 +14,19 @@
 
 (defn- with-local
   "Adds the `local` to the Metadata Provider."
-  [local & body]
-  (let [{:keys [qp query rff]} body]
-    (log/infof "QP: %s" (pr-str qp))
-    (log/infof "Query: %s" (pr-str query))
-    (log/infof "RFF: %s" (pr-str rff))
-    (let [provider (qp.store/metadata-provider)
-          database (lib.metadata/database provider)
-          rff* (fn [metadata]
-                 (binding [qp.store/*DANGER-allow-replacing-metadata-provider* true]
-                   (qp.store/with-metadata-provider (u/id database)
-                     (rff metadata))))]
-      (binding [qp.store/*DANGER-allow-replacing-metadata-provider* true]
-        (qp.store/with-metadata-provider (reify lib.metadata.protocols/MetadataProvider
-                                           (database [_this] (assoc database :details (assoc (:details database) :local local)))
-                                           (metadatas [_this metadata-spec] (lib.metadata.protocols/metadatas provider metadata-spec))
-                                           (setting [_this setting-key] (lib.metadata/setting provider setting-key)))
-          (qp query rff*))))))
+  [local & {:keys [qp query rff]}]
+  (let [provider (qp.store/metadata-provider)
+        database (lib.metadata/database provider)
+        rff* (fn [metadata]
+               (binding [qp.store/*DANGER-allow-replacing-metadata-provider* true]
+                 (qp.store/with-metadata-provider (u/id database)
+                   (rff metadata))))]
+    (binding [qp.store/*DANGER-allow-replacing-metadata-provider* true]
+      (qp.store/with-metadata-provider (reify lib.metadata.protocols/MetadataProvider
+                                         (database [_this] (assoc database :details (assoc (:details database) :local local)))
+                                         (metadatas [_this metadata-spec] (lib.metadata.protocols/metadatas provider metadata-spec))
+                                         (setting [_this setting-key] (lib.metadata/setting provider setting-key)))
+        (qp query rff*)))))
 
 (mu/defn set-local :- ::qp.schema/qp
   "Sets the connection details local for Sidekick databases."
@@ -51,7 +47,7 @@
             (string? local)
             (do
               (log/info "Local user detected. Use the templated username and password.")
-              (with-local local (qp query rff)))
+              (with-local local {:qp qp :query query :rff rff}))
 
             :else
             (throw (ex-info (tru "Required user attribute `local` is missing. Cannot access Sidekick database.") {:status-code 400}))
