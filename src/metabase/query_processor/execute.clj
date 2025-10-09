@@ -5,7 +5,6 @@
    [metabase.query-processor.middleware.cache :as cache]
    [metabase.query-processor.middleware.enterprise :as qp.middleware.enterprise]
    [metabase.query-processor.middleware.permissions :as qp.perms]
-   [metabase.query-processor.middleware.sidekick-custom.set-local :as sk-middleware.set-local]
    [metabase.query-processor.middleware.update-used-cards :as update-used-cards]
    [metabase.query-processor.pipeline :as qp.pipeline]
    [metabase.query-processor.schema :as qp.schema]
@@ -13,7 +12,8 @@
    [metabase.query-processor.util :as qp.util]
    [metabase.util :as u]
    [metabase.util.log :as log]
-   [metabase.util.malli :as mu]))
+   [metabase.util.malli :as mu]
+   [sidekick.middleware :as sk.middleware]))
 
 (set! *warn-on-reflection* true)
 
@@ -49,7 +49,7 @@
     (f (f query rff)) -> (f query rff)
 
   All of these middlewares assume MBQL 5."
-  [#'sk-middleware.set-local/set-local
+  [#'sk.middleware/set-local
    #'qp.middleware.enterprise/swap-destination-db-middleware
    #'qp.middleware.enterprise/apply-impersonation-postprocessing-middleware
    #'update-used-cards/update-used-cards!
