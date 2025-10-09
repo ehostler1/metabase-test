@@ -1,5 +1,5 @@
 (ns sidekick.common
-  (:require 
+  (:require
    [metabase.util :as u]
    [metabase.util.log :as log]
    [toucan2.core :as t2]))
@@ -11,15 +11,15 @@
         {:keys [name details is_on_demand auto_run_queries cache_ttl creator_id is_full_sync]} sidekick-db]
     (log/infof "Database info: %s" (pr-str sidekick-db))
     (first (t2/insert-returning-instances!
-            :model/LocalDatabase
+            :model/Database
             {:name         (str name " (" local ")")
              :engine       :sidekick
              :details      (merge details {:local local :sidekick-parent-id sidekick-db-id :local-databases {}})
-             :auto-run-queries   auto_run_queries
-             :is-full-sync       is_full_sync
-             :is-on-demand       is_on_demand
-             :cache-ttl          cache_ttl
-             :creator-id         creator_id}))))
+             :auto_run_queries   auto_run_queries
+             :is_full_sync       is_full_sync
+             :is_on_demand       is_on_demand
+             :cache_ttl          cache_ttl
+             :creator_id         creator_id}))))
 
 (defn sidekick-db->local-db
   "Given a Sidekick database and local, returns the the local database that should be used to connect."
@@ -27,7 +27,7 @@
   (log/infof "Fetching local database for Sidekick DB %s and local %s" (u/the-id sidekick-db) local)
   (if (= (:engine sidekick-db) :sidekick)
     (let [local-db-id (get-in sidekick-db [:details :local-databases local])]
-      (if-let [local-db (if local-db-id (t2/select-one :model/LocalDatabase :id local-db-id) nil)]
+      (if-let [local-db (if local-db-id (t2/select-one :model/Database :id local-db-id) nil)]
         local-db
         (let [local-db (create-local-db (:id sidekick-db) local)]
           (log/info "This is a test")
