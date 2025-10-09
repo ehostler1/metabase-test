@@ -49,7 +49,7 @@
     (f (f query rff)) -> (f query rff)
 
   All of these middlewares assume MBQL 5."
-  [#'sk.middleware/set-local
+  [#'sk.middleware/swap-local-db
    #'qp.middleware.enterprise/swap-destination-db-middleware
    #'qp.middleware.enterprise/apply-impersonation-postprocessing-middleware
    #'update-used-cards/update-used-cards!
