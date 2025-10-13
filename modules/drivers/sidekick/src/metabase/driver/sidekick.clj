@@ -6,8 +6,7 @@
    [metabase.driver :as driver]
    [metabase.driver-api.core :as driver-api]
    [metabase.driver.sql-jdbc.common :as sql-jdbc.common]
-   [metabase.driver.sql-jdbc.connection :as sql-jdbc.conn]
-   [metabase.util.log :as log]))
+   [metabase.driver.sql-jdbc.connection :as sql-jdbc.conn]))
 
 (set! *warn-on-reflection* true)
 
@@ -16,8 +15,7 @@
 (defmethod sql-jdbc.conn/connection-details->spec :sidekick [_ details-map]
   (let [{:keys [local-user local-password admin-user admin-password db host port domain local]
          :as   details}
-        (merge details-map {:local-user (or (:local-user details-map) "customReports_{local}")})] ;; default values
-    (log/infof "Connection spec requested for local: %s" local)
+        (merge details-map {:local-user (or (:local-user details-map) "customReports_{local}") :additional-options "ApplicationIntent=ReadOnly;"})] ;; default values and application intent
     (-> {:applicationName    driver-api/mb-version-and-process-identifier
          :subprotocol        "sqlserver"
        ;; it looks like the only thing that actually needs to be passed as the `subname` is the host; everything else
@@ -42,9 +40,3 @@
       ;; only include `port` if it is specified; leave out for dynamic port: see
       ;; https://github.com/metabase/metabase/issues/7597
         (sql-jdbc.common/handle-additional-options details, :seperator-style :semicolon))))
-
-;; (defmethod sql.qp/preprocess :sidekick
-;;   [driver inner-query]
-;;   (log/warnf "The inner-query object: %s" (pr-str inner-query))
-;;   (let [parent-preprocess (get-method sql.qp/preprocess :sqlserver)]
-;;     (parent-preprocess driver inner-query))) ;; delegate to the sqlserver preprocess, since Sidekick is just a thin wrapper around SQL Server
