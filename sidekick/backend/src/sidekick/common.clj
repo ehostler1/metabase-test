@@ -19,7 +19,8 @@
                {:name         (str name " (" local ")")
                 :engine       :sidekick
                 :is_full_sync false
-                :details      (merge (dissoc details :local-databases :admin-user :admin-password) {:local local :sidekick-parent-id sidekick-db-id})}))
+                :details      (merge (dissoc details :local-databases :admin-user :admin-password) {:local local})
+                :router_database_id sidekick-db-id}))
              (events/publish-event! :event/database-create {:object <>
                                                             :user-id api/*current-user-id*
                                                             :details {:slug (:name <>)
@@ -31,7 +32,7 @@
   [sidekick-db local]
   (log/infof "Fetching local database for Sidekick DB %s and local %s" (u/the-id sidekick-db) local)
   (if (= (:engine sidekick-db) :sidekick)
-    (let [local-db-id (get-in sidekick-db [:details :local-databases (keyword local)])] 
+    (let [local-db-id (get-in sidekick-db [:details :local-databases (keyword local)])]
       (log/infof "Local database ID is %s" local-db-id)
       (if-let [local-db (if local-db-id (t2/select-one :model/Database :id local-db-id) nil)]
         local-db
