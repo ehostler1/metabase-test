@@ -35,7 +35,8 @@
             (nil? @api/*current-user*)
             (throw (ex-info (tru "Anonymous users cannot access a Sidekick database.") {:status-code 400}))
 
-            api/*is-superuser?*
+            ;; src/metabase/embedding/api/common.clj binds api/*is-superuser?* to true for embedded sessions, so use the property on the user instead to determine if the user is a superuser
+            (get @api/*current-user* :is_superuser)
             (do
               (log/info "Superuser detected. Use the admin username and password.")
               (qp query rff))
