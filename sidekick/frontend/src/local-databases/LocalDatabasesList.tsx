@@ -36,7 +36,7 @@ export const LocalDatabasesList = ({
         <RunButtonWithTooltip
           isRunning={localDbsReq.isFetching}
           onRun={() => localDbsReq.refetch()}
-          tooltip={t`Refresh`}
+          getTooltip={() => t`Refresh`}
         />
       </Flex>
       <LoadingAndErrorWrapper
