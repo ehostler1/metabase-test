@@ -28,6 +28,7 @@ import type {
   Database as DatabaseType,
 } from "metabase-types/api";
 
+import { DatabaseLocalDatabasesSection } from "../../../../../../sidekick/frontend/src/local-databases/DatabaseLocalDatabasesSection";
 import { DatabaseConnectionInfoSection } from "../components/DatabaseConnectionInfoSection";
 import { DatabaseDangerZoneSection } from "../components/DatabaseDangerZoneSection";
 import { DatabaseModelFeaturesSection } from "../components/DatabaseModelFeaturesSection";
@@ -123,6 +124,8 @@ function DatabaseEditAppInner({
                   <PLUGIN_DB_ROUTING.DatabaseRoutingSection
                     database={database}
                   />
+
+                  <DatabaseLocalDatabasesSection database={database} />
 
                   <DatabaseDangerZoneSection
                     isAdmin={isAdmin}
