@@ -12,7 +12,8 @@
    [metabase.query-processor.util :as qp.util]
    [metabase.util :as u]
    [metabase.util.log :as log]
-   [metabase.util.malli :as mu]))
+   [metabase.util.malli :as mu]
+   [sidekick.middleware :as sk.middleware]))
 
 (set! *warn-on-reflection* true)
 
@@ -48,7 +49,8 @@
     (f (f query rff)) -> (f query rff)
 
   All of these middlewares assume MBQL 5."
-  [#'qp.middleware.enterprise/swap-destination-db-middleware
+  [#'sk.middleware/swap-local-db
+   #'qp.middleware.enterprise/swap-destination-db-middleware
    #'qp.middleware.enterprise/apply-impersonation-postprocessing-middleware
    #'update-used-cards/update-used-cards!
    #'add-native-form-to-result-metadata

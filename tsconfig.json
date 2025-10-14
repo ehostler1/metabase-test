@@ -9,7 +9,8 @@
         "./frontend/src/*",
         "./frontend/test/*",
         "./enterprise/frontend/src/*",
-        "./enterprise/frontend/test/*"
+        "./enterprise/frontend/test/*",
+        "./sidekick/frontend/src/*"
       ],
       "build-configs/*": ["./frontend/build/*"],
       "cljs/*": ["./target/cljs_dev/*"],
@@ -27,6 +28,7 @@
   "include": [
     "frontend/src/**/*",
     "enterprise/frontend/src/**/*",
+    "sidekick/frontend/src/**/*",
     "frontend/test/**/*",
     "enterprise/frontend/test/**/*"
   ],

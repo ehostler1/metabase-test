@@ -1,0 +1,59 @@
+info:
+  name: Metabase Sidekick Database
+  version: 1.0.0-SNAPSHOT-9.2.1.jre8
+  description: Allows Metabase to connect to the Sidekick database.
+dependencies:
+  - plugin: Metabase SQL Server Driver
+driver:
+  name: sidekick
+  display-name: Sidekick SQL Server
+  lazy-load: true
+  parent: sqlserver
+  connection-properties:
+    - merge:
+        - host
+        - helper-text: The Sidekick database IP address or domain name (e.g. tt-bezos).
+          required: true
+    - merge:
+        - port
+        - helper-text: The Sidekick database port. Standard port is 1433.
+          placeholder: 1433
+          required: true
+    - merge:
+        - dbname
+        - name: db
+          placeholder: Sidekick
+    - name: local
+      display-name: Local
+      placeholder: T0001
+      helper-text: The Sidekick local. Leave blank to enable the middleware to set the local from the user's login attributes.
+    - merge:
+        - user
+        - name: local-user
+          display-name: Local Username
+          placeholder: customReports_{local}
+          helper-text: The Sidekick database templated username, where {local} is replaced with the user's local. Leave blank to use "customReports_{local}".
+          required: false
+    - merge:
+        - password
+        - name: local-password
+          display-name: Local Password
+          required: true
+    - merge:
+        - user
+        - name: admin-user
+          display-name: Admin username
+    - merge:
+        - password
+        - name: admin-password
+          display-name: Admin password
+          required: true
+    - advanced-options-start
+    - default-advanced-options
+init:
+  - step: load-namespace
+    namespace: metabase.driver.sqlserver
+  - step: load-namespace
+    namespace: metabase.driver.sidekick
+  - step: register-jdbc-driver
+    class: com.microsoft.sqlserver.jdbc.SQLServerDriver

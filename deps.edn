@@ -211,7 +211,7 @@
  ;; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
  :paths
- ["src" "resources"]
+ ["src" "resources" "sidekick/backend/src"]
 
  ;; These are needed for the Athena and Redshift drivers if you are developing against them locally. If those drivers'
  ;; dependencies are not included (i.e., if we don't have the `:drivers` profile), these repos are effectively
