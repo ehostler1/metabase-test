@@ -50,7 +50,8 @@ export function isEditableCollection(collection: Collection) {
     collection.can_write &&
     !isRootCollection(collection) &&
     !isRootPersonalCollection(collection) &&
-    !isTrashedCollection(collection)
+    !isTrashedCollection(collection) &&
+    !isContributeOnlyCollection(collection)
   );
 }
 
@@ -131,6 +132,17 @@ export function isPersonalCollectionOrChild(
 
 export function isRootCollection(collection: Pick<Collection, "id">): boolean {
   return canonicalCollectionId(collection?.id) === null;
+}
+
+export function isContributeOnlyCollection(collection: Collection) {
+  return (
+    !collection.effective_ancestors ||
+    !(
+      collection.effective_ancestors.find(
+        (c) => canonicalCollectionId(c.id) === collection.parent_id,
+      ) as Collection
+    )?.can_write
+  );
 }
 
 export function isItemPinned(item: CollectionItem) {

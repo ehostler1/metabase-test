@@ -2,6 +2,7 @@ import { type ReactNode, useState } from "react";
 import { t } from "ttag";
 
 import {
+  isContributeOnlyCollection,
   isInstanceAnalyticsCustomCollection,
   isPersonalCollection,
   isRootCollection,
@@ -45,13 +46,15 @@ export const CollectionMenu = ({
   const isPersonal = isPersonalCollection(collection);
   const isInstanceAnalyticsCustom =
     isInstanceAnalyticsCustomCollection(collection);
+  const isContributeOnly = isContributeOnlyCollection(collection);
 
   const canWrite = collection.can_write;
   const canMove =
     !isRoot &&
     !isRootPersonalCollection(collection) &&
     canWrite &&
-    !isInstanceAnalyticsCustom;
+    !isInstanceAnalyticsCustom &&
+    !isContributeOnly;
 
   const moveItems = [];
   const cleanupItems = [];
