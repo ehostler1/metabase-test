@@ -65,7 +65,8 @@
    [metabase.version.init]
    [metabase.view-log.init]
    [metabase.warehouses.init]
-   [metabase.xrays.init]))
+   [metabase.xrays.init]
+   [sidekick.init]))
 
 ;; load EE init code on system launch if it exists.
 (when (and (not *compile-files*)

@@ -25,12 +25,12 @@
         (qp query rff*)))))
 
 (mu/defn swap-local-db :- ::qp.schema/qp
-  "Swaps the base Sidekick database with the appropriate local database."
+  "Swaps the base Sidekick database with the appropriate local database. Must be the last middleware in the chain in the metabase.query-processor.execute namespace."
   [qp :- ::qp.schema/qp]
   (fn [query rff]
     (let [database (lib.metadata/database (qp.store/metadata-provider))]
       (if (and (= (:engine database) :sidekick) (nil? (:local (:details database))))
-        (let [local (get (api/current-user-attributes) "local")] 
+        (let [local (get (api/current-user-attributes) "local")]
           (cond
             (nil? @api/*current-user*)
             (throw (ex-info (tru "Anonymous users cannot access a Sidekick database.") {:status-code 400}))
