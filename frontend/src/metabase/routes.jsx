@@ -2,7 +2,6 @@ import { IndexRedirect, IndexRoute, Redirect } from "react-router";
 import { t } from "ttag";
 
 import App from "metabase/App.tsx";
-import getAccountRoutes from "metabase/account/routes";
 import CollectionPermissionsModal from "metabase/admin/permissions/components/CollectionPermissionsModal/CollectionPermissionsModal";
 import getAdminRoutes from "metabase/admin/routes";
 import { ForgotPassword } from "metabase/auth/components/ForgotPassword";
@@ -363,9 +362,6 @@ export const getRoutes = (store) => {
             />
             <Route path="glossary" component={GlossaryContainer} />
           </Route>
-
-          {/* ACCOUNT */}
-          {getAccountRoutes(store, IsAuthenticated)}
 
           {/* ADMIN */}
           {getAdminRoutes(store, CanAccessSettings, IsAdmin)}

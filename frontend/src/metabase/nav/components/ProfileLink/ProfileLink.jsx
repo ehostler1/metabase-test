@@ -18,7 +18,6 @@ import {
 } from "metabase/home/selectors";
 import { capitalize } from "metabase/lib/formatting";
 import { connect, useDispatch, useSelector } from "metabase/lib/redux";
-import * as Urls from "metabase/lib/urls";
 import { openDiagnostics } from "metabase/redux/app";
 import { setOpenModal } from "metabase/redux/ui";
 import {
@@ -72,12 +71,6 @@ function ProfileLink({
     const showOnboardingLink = !isNewInstance && canAccessOnboardingPage;
 
     return [
-      {
-        title: t`Account settings`,
-        icon: null,
-        link: Urls.accountSettings(),
-        event: `Navbar;Profile Dropdown;Edit Profile`,
-      },
       showAdminSettingsItem && {
         title: t`Admin settings`,
         icon: null,
