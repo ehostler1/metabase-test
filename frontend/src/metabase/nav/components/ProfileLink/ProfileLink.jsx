@@ -20,6 +20,7 @@ import { capitalize } from "metabase/lib/formatting";
 import { connect, useDispatch, useSelector } from "metabase/lib/redux";
 import { openDiagnostics } from "metabase/redux/app";
 import { setOpenModal } from "metabase/redux/ui";
+import { getUserIsAdmin } from "metabase/selectors/user";
 import {
   getApplicationName,
   getIsWhiteLabeling,
@@ -55,6 +56,7 @@ function ProfileLink({
   const { tag, date, ...versionExtra } = version;
   const helpLink = useHelpLink();
   const dispatch = useDispatch();
+  const isAdmin = useSelector(getUserIsAdmin);
 
   const openModal = (modalName) => {
     setModalOpen(modalName);
@@ -64,7 +66,7 @@ function ProfileLink({
     setModalOpen(null);
   };
 
-  const generateOptionsForUser = () => {
+  const generateOptionsForUser = (isAdmin) => {
     const showAdminSettingsItem = adminItems?.length > 0;
 
     // If the instance is not new, we remove the link from the sidebar automatically and show it here instead!
@@ -114,10 +116,11 @@ function ProfileLink({
         action: () => openModal("about"),
         event: `Navbar;Profile Dropdown;About ${tag}`,
       },
-      {
+      // only show logout option to admin - regular users will be managed vis the sidekick api
+      isAdmin && {
         separator: true,
       },
-      {
+      isAdmin && {
         title: t`Sign out`,
         icon: null,
         action: () => onLogout(),
@@ -130,7 +133,7 @@ function ProfileLink({
   const isWhiteLabeling = useSelector(getIsWhiteLabeling);
   const showTrademark = !isWhiteLabeling;
 
-  const menuItems = generateOptionsForUser();
+  const menuItems = generateOptionsForUser(isAdmin);
 
   return (
     <div>
